@@ -48,7 +48,7 @@ class UserController extends Controller
         // $validator = Validator::make(Input::all(), $rules);
         $validator = Validator::make($request->all(), [
             'name'  => 'required',
-            'email' => 'requireds'
+            'email' => 'required'
         ]);
 
         if($validator->fails() )
@@ -60,11 +60,9 @@ class UserController extends Controller
             $user->name  = $request->input('name');
             $user->email = $request->input('email');
             $user->save();
-
-            //Session::flash('message', 'Successfull crated user!');
-            $users = User::all();
-        
-            return View::make('users.index')->with('users', $users);        
+      
+            return redirect()->route('users.show', [$user]);
+            //return View::make('users.show')->with('users', $user);
         }
     }
 
@@ -76,9 +74,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user = find($user);
-
-        return View::make('users.show')->with('user', $user);
+        return View::make('users.show')->with('users', $user);
     }
 
     /**
