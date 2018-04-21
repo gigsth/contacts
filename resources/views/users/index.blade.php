@@ -40,8 +40,15 @@
             <td>{{ $value->email }}</td>
 
             <td> 
-                <a class="btn btn-small btn-success" href="{{ URL::to('users/' . $value->id) }}">Show this User</a>
-                <a class="btn btn-small btn-info" href="{{ URL::to('users/' . $value->id . '/edit') }}">Edit this User</a>
+                <a class="btn btn-small btn-success" href="{{ route('users.show',    [$value]) }}">Show this User</a>
+                <a class="btn btn-small btn-info"    href="{{ route('users.edit',    [$value]) }}">Edit this User</a>
+                <form action="{{ route('users.destroy', $value->id) }}" method="POST" style="display:inline;">
+                    @method('DELETE')
+                    @csrf
+
+                    <button type="submit" class="btn btn-small btn-danger">Delete this User</button>
+                </form>
+                <!-- <a class="btn btn-small btn-danger"  href="{{ URL::to('users/' . $value->id) }}" data-method="delete" data-token="{{csrf_token()}}">Delete this User</a> -->
             </td>
         </tr>
     @endforeach

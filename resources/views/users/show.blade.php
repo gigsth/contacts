@@ -9,19 +9,28 @@
 
 <nav class="navbar navbar-inverse">
     <div class="navbar-header">
-        <a class="navbar-brand" href="{{ URL::to('users') }}">User Alert</a>
+        <a class="navbar-brand" href="{{ URL::to('users') }}">Contacts User</a>
     </div>
     <ul class="nav navbar-nav">
         <li><a href="{{ URL::to('users') }}">View All Users</a></li>
-        <li><a href="{{ URL::to('users/create') }}">Create a User</a>
+        <li><a href="{{ route('users.contacts') }}">Create a User</a>
     </ul>
 </nav>
 
-<h1>Showing {{ $users->name }}</h1>
+<h1>Showing {{ $user->name }}</h1>
 <div class="jumbutron-center">
     <p>
-        <strong>Name : </strong> {{ $users->name }} </br>
-        <strong>Email : </strong> {{ $users->email }} </br>
-        <strong>Create Date : </strong> {{ $users->created_at }}
+        <strong>Name : </strong> {{ $user->name }} </br>
+        <strong>Email : </strong> {{ $user->email }} </br>
+        <strong>Create Date : </strong> {{ $user->created_at }}
     <p>
+</div>
+<div>
+    <a class="btn btn-small btn-info" href="{{ URL::to('users/' . $user->id . '/edit') }}">Edit this User</a>
+    <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
+        @method('DELETE')
+        @csrf
+
+        <button type="submit" class="btn btn-small btn-danger">Delete this User</button>
+    </form>
 </div>

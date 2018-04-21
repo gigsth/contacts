@@ -41,11 +41,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // $rules = array(
-        //     'name'  => 'required',
-        //     'email' => 'required|email'
-        // );
-        // $validator = Validator::make(Input::all(), $rules);
         $validator = Validator::make($request->all(), [
             'name'  => 'required',
             'email' => 'required'
@@ -53,8 +48,10 @@ class UserController extends Controller
 
         if($validator->fails() )
         {
-            return Redirect::to('users/create')->withErrors($validator);
-        } else
+            return Redirect::to('users.create')->withErrors($validator);
+        } 
+        
+        else
         {
             $user = new User;
             $user->name  = $request->input('name');
@@ -62,7 +59,6 @@ class UserController extends Controller
             $user->save();
       
             return redirect()->route('users.show', [$user]);
-            //return View::make('users.show')->with('users', $user);
         }
     }
 
@@ -74,7 +70,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return View::make('users.show')->with('users', $user);
+        return View::make('users.show')->with('user', $user);
     }
 
     /**
@@ -85,7 +81,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return View::make('users.edit')->with('user', $user);
     }
 
     /**
@@ -97,7 +93,25 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name'  => 'required',
+            'email' => 'required'
+        ]);
+
+        if($validator->fails() )
+        {
+            return back()->withErrors($validator);
+        } 
+        
+        else
+        {
+            $user = new User;
+            $user->name  = $request->input('name');
+            $user->email = $request->input('email');
+            $user->save();
+      
+            return redirect()->route('users.show', [$user]);
+        }
     }
 
     /**
@@ -108,6 +122,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return redirect()->route('users.index');
     }
 }
