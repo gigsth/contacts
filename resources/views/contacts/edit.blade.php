@@ -18,15 +18,18 @@
     </ul>
 </nav>
 
-<form method="post" action="{{ route('users.contacts.store', $user) }}">
+
+<h3>Edit Contacts {{ $user->name }} : {{ $contact->name}}</h3>
+<form method="post" action="{{ route('users.contacts.show', [$user,$contact]) }}">
     @csrf
+    @method('PUT')
     <div class="form-group">
         <label>Name : </label>
-        <input type="text" name="name" />
+        <input type="text" name="name" value="{{ $contact->name }}"/>
     </div>
     <div class="form-group">
         <label>Mobile : </label>
-        <input type="text" name="mobile" />
+        <input type="text" name="mobile" value="{{ $contact->mobile }}"/>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>

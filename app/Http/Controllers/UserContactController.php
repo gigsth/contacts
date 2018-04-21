@@ -86,9 +86,11 @@ class UserContactController extends Controller
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contact $contact)
+    public function edit(User $user, Contact $contact)
     {
-        //
+        return View::make('contacts.edit')
+            ->with('user', $user)
+            ->with('contact', $contact);
     }
 
     /**
@@ -98,9 +100,29 @@ class UserContactController extends Controller
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contact $contact)
+    public function update(Request $request, User $user, Contact $contact)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name'   => 'required',
+            'mobile' => 'required'
+        ]);
+
+        if($validator->fails() )
+        {
+            return redirect()->route('users.contacts.creaate')
+            ->with('user', $user)
+            ->withErrors($validator);
+        } 
+        
+        else
+        {
+            $contact->name      = $request->input('name');
+            $contact->mobile    = $request->input('mobile');
+            $contact->user_id   = $user->id;
+            $contact->save();
+      
+            return redirect()->route('users.contacts.show', [$user, $contact]);
+        }
     }
 
     /**
@@ -109,8 +131,10 @@ class UserContactController extends Controller
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact)
+    public function destroy(User $user, Contact $contact)
     {
-        //
+        $contact->delete();
+
+        return redirect()->route('users.contacts.index', [$user]);
     }
 }
