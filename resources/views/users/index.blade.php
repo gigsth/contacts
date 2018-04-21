@@ -48,7 +48,6 @@
 
                     <button type="submit" class="btn btn-small btn-danger">Delete this User</button>
                 </form>
-                <!-- <a class="btn btn-small btn-danger"  href="{{ URL::to('users/' . $value->id) }}" data-method="delete" data-token="{{csrf_token()}}">Delete this User</a> -->
             </td>
         </tr>
     @endforeach

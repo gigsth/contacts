@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Contact;
+use Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class UserContactController extends Controller
 {
@@ -15,8 +17,11 @@ class UserContactController extends Controller
      */
     public function index(User $user)
     {
-        return view('users.contacts', ['contacts' => $user->contacts]);
-        //return("Hello world");
+        $contacts =  $user->contacts;
+
+        return View::make('contacts.index')
+            ->with('user', $user)
+            ->with('contacts', $contacts);
     }
 
     /**
@@ -24,9 +29,10 @@ class UserContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(User $user)
     {
-        //
+        return View::make('contacts.create')
+            ->with('user', $user);
     }
 
     /**
@@ -35,9 +41,30 @@ class UserContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(User $user, Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name'   => 'required',
+            'mobile' => 'required'
+        ]);
+
+        if($validator->fails() )
+        {
+            return redirect()->route('users.contacts.creaate')
+            ->with('user', $user)
+            ->withErrors($validator);
+        } 
         
+        else
+        {
+            $contact = new Contact;
+            $contact->name      = $request->input('name');
+            $contact->mobile    = $request->input('mobile');
+            $contact->user_id   = $user->id;
+            $contact->save();
+      
+            return redirect()->route('users.contacts.show', [$user, $contact]);
+        }
     }
 
     /**
@@ -46,9 +73,11 @@ class UserContactController extends Controller
      * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function show(Contact $contact)
+    public function show(User $user, Contact $contact)
     {
-        
+        return View::make('contacts.show')
+            ->with('user', $user)
+            ->with('contact', $contact);
     }
 
     /**

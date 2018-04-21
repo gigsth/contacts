@@ -19,7 +19,7 @@
 
             <h1>Create User</h1>
 
-            <form method="post" action="/users">
+            <form method="post" action="{{ route('users.store') }}">
                 @csrf
                 <div class="form-group">
                     <label>Name : </label>

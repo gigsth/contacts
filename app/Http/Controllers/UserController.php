@@ -70,7 +70,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return View::make('users.show')->with('user', $user);
+        return View::make('users.show')
+            ->with('user', $user);
     }
 
     /**
