@@ -13,7 +13,7 @@
     </div>
     <ul class="nav navbar-nav">
         <li><a href="{{ URL::to('users') }}">View All Users</a></li>
-        <li><a href="{{ route('users.contacts') }}">Create a User</a>
+        <li><a href="{{ route('users.contacts.index', $user) }}">View all contacts</a>
     </ul>
 </nav>
 
