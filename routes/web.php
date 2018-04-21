@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::resource('users.contacts', 'UserContactController');
+Route::resource('users', 'UserController');
